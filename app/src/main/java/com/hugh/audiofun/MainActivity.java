@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.hugh.sound.SoundTouchActivity;
 import com.zhl.commonadapter.BaseViewHolder;
 import com.zhl.commonadapter.CommonAdapter;
 
@@ -61,6 +62,13 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+        goToSoundTouch();
+    }
+
+    private void goToSoundTouch(){
+        Intent intent = new Intent(MainActivity.this, SoundTouchActivity.class);
+        startActivity(intent);
     }
 
     enum Item {

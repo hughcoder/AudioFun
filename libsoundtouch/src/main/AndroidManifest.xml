@@ -1,0 +1,6 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.hugh.sound">
+    <application>
+        <activity android:name=".SoundTouchActivity" />
+    </application>
+</manifest>
