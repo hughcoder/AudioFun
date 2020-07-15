@@ -60,4 +60,6 @@ public class FmodSound {
      */
     public static native int saveSound(String inputSoundPath, String outputSoundPath, int type);
 
+    public static native String getVersion();
+
 }

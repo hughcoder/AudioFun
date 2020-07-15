@@ -6,8 +6,8 @@
 #include <unistd.h>
 #include <cstring>
 
-#define LOGI(FORMAT, ...) __android_log_print(ANDROID_LOG_INFO,"AiSound",FORMAT,##__VA_ARGS__);
-#define LOGE(FORMAT, ...) __android_log_print(ANDROID_LOG_ERROR,"AiSound",FORMAT,##__VA_ARGS__);
+#define LOGI(FORMAT, ...) __android_log_print(ANDROID_LOG_INFO,"fmodSound",FORMAT,##__VA_ARGS__);
+#define LOGE(FORMAT, ...) __android_log_print(ANDROID_LOG_ERROR,"fmodSound",FORMAT,##__VA_ARGS__);
 #define TYPE_NORMAL  0
 #define TYPE_LOLITA  1
 #define TYPE_UNCLE   2
@@ -22,7 +22,8 @@ using namespace FMOD;
 
 Channel *channel;
 
-JNIEXPORT jint JNICALL Java_com_hugh_audiofun_FmodSound_saveSound
+
+extern "C" JNIEXPORT jint JNICALL Java_com_hugh_audiofun_FmodSound_saveSound
         (JNIEnv *env, jclass jcls, jstring path_jstr, jstring path2_jstr, jint type) {
 
     System *system;
@@ -121,7 +122,7 @@ JNIEXPORT jint JNICALL Java_com_hugh_audiofun_FmodSound_saveSound
 
 }
 
-JNIEXPORT void JNICALL Java_com_hugh_audiofun_FmodSound_playSound
+extern "C" JNIEXPORT void JNICALL Java_com_hugh_audiofun_FmodSound_playSound
         (JNIEnv *env, jclass jcls, jstring path_jstr, jint type) {
     LOGI("%s", "--> start");
 
@@ -219,7 +220,7 @@ JNIEXPORT void JNICALL Java_com_hugh_audiofun_FmodSound_playSound
 }
 
 
-JNIEXPORT void JNICALL Java_com_hugh_audiofun_FmodSound_stopSound
+extern "C" JNIEXPORT void JNICALL Java_com_hugh_audiofun_FmodSound_stopSound
         (JNIEnv *env, jclass jcls) {
     LOGI("%s", "--> start");
 
@@ -227,7 +228,7 @@ JNIEXPORT void JNICALL Java_com_hugh_audiofun_FmodSound_stopSound
 
 }
 
-JNIEXPORT void JNICALL Java_com_hugh_audiofun_FmodSound_resumeSound
+extern "C" JNIEXPORT void JNICALL Java_com_hugh_audiofun_FmodSound_resumeSound
         (JNIEnv *env, jclass jcls) {
     LOGI("%s", "--> start");
 
@@ -235,7 +236,7 @@ JNIEXPORT void JNICALL Java_com_hugh_audiofun_FmodSound_resumeSound
 
 }
 
-JNIEXPORT void JNICALL Java_com_hugh_audiofun_FmodSound_pauseSound
+extern "C" JNIEXPORT void JNICALL Java_com_hugh_audiofun_FmodSound_pauseSound
         (JNIEnv *env, jclass jcls) {
     LOGI("%s", "--> start");
 
@@ -243,10 +244,22 @@ JNIEXPORT void JNICALL Java_com_hugh_audiofun_FmodSound_pauseSound
 
 }
 
-JNIEXPORT jboolean JNICALL Java_com_hugh_audiofun_FmodSound_isPlay
+extern "C" JNIEXPORT jboolean JNICALL Java_com_hugh_audiofun_FmodSound_isPlay
         (JNIEnv *env, jclass jcls) {
     LOGI("%s", "--> start");
     bool isPlaying = true;
     return !channel->isPlaying(&isPlaying);
 
+}
+
+extern "C" JNIEXPORT jstring JNICALL Java_com_hugh_audiofun_FmodSound_getVersion
+        (JNIEnv *env, jclass jcls) {
+    System *system;
+    System_Create(&system);
+    FMOD_RESULT result;
+    unsigned int version = 2;
+    result = system->getVersion(&version);
+    LOGI("result %d\n", result);
+
+    return env->NewStringUTF("getVersion");
 }

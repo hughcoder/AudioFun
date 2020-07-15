@@ -3,6 +3,8 @@ cmake_minimum_required(VERSION 3.4.1)
 # 设置加载源文件路径 my_source
 file(GLOB my_source src/main/cpp/*.cpp src/main/cpp/*.c src/main/cpp/*/*.cpp src/main/cpp/*/*.c)
 
+message("当前my_source路径: ${my_source}")
+
 # 设置变量
 set(FFMPEG_LIB_DIR ${CMAKE_SOURCE_DIR}/libs/${ANDROID_ABI})
 
