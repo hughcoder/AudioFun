@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.hugh.sound.SoundTouch;
 import com.hugh.sound.SoundTouchActivity;
 import com.zhl.commonadapter.BaseViewHolder;
 import com.zhl.commonadapter.CommonAdapter;
@@ -37,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
         }
         ListView listView = findViewById(R.id.lv_main);
 
+        Log.e("aaa", SoundTouch.getVersionString());
+
         mAdapter = new CommonAdapter<Item>(Arrays.asList(Item.values())) {
             @Override
             public BaseViewHolder<Item> createViewHolder(int type) {
@@ -57,13 +60,17 @@ public class MainActivity extends AppCompatActivity {
                     case TYPE_PLAY_3:
                         Log.e("aaa","version"+getVersion());
                         break;
+                    case TYPE_GO:
+                        Intent intent =new Intent(MainActivity.this,SoundTouchActivity.class);
+                        startActivity(intent);
+                        break;
                     default:
                         break;
                 }
             }
         });
 
-        goToSoundTouch();
+//        goToSoundTouch();
     }
 
     private void goToSoundTouch(){
@@ -72,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     enum Item {
+        TYPE_GO("soundTouch"),
         TYPE_PLAY_1("播放萝莉"),
         TYPE_PLAY_2("播放空灵"),
         TYPE_PLAY_3("得到版本");
