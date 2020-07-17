@@ -1,5 +1,6 @@
 package com.hugh.sound;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.util.Log;
@@ -26,7 +27,8 @@ public class SoundTouchActivity extends AppCompatActivity {
         findViewById(R.id.btn_go).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent =new Intent(SoundTouchActivity.this,ExampleActivity.class);
+                startActivity(intent);
             }
         });
     }
