@@ -67,7 +67,7 @@
             android:id="@+id/editTextSrcFileName"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="/sdcard/Download/test.wav"
+            android:text="/storage/emulated/0/1/alipay.wav"
             android:layout_weight="1" />
                
 
@@ -92,7 +92,7 @@
             android:id="@+id/editTextOutFileName"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="/sdcard/Download/soundtouch-output.wav"
+            android:text="/storage/emulated/0/1/out1.wav"
             android:layout_weight="1" />
 
         <Button
@@ -109,12 +109,22 @@
         android:layout_marginTop="10dp"
         android:text="Play the output file after processing!" />
 
-    <Button
-        android:id="@+id/buttonProcess"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="Process file!" />
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal">
+      <Button
+          android:id="@+id/btn_choose_file"
+          android:text="选择文件"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"/>
+      <Button
+          android:id="@+id/buttonProcess"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center"
+          android:text="Process file!" />
+  </LinearLayout>
 
     <TextView
         android:layout_width="wrap_content"

@@ -2,6 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.hugh.audiofun">
 
+    <!--网络连接-->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!--sd卡读写   6.0以上系统可能还需要动态申请sd卡读写权限-->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
