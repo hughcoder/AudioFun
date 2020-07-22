@@ -27,7 +27,7 @@ public class SoundTouchActivity extends AppCompatActivity {
         findViewById(R.id.btn_go).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              startActivity(new Intent(SoundTouchActivity.this,ExampleActivity.class));
+                startActivity(new Intent(SoundTouchActivity.this,ExampleActivity.class));
             }
         });
     }
