@@ -62,4 +62,10 @@ public class FmodSound {
 
     public static native String getVersion();
 
+
+    // 混响相关
+
+
+    public static native void play3DSound(String path);
+
 }

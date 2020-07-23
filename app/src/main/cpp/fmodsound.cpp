@@ -22,6 +22,58 @@ using namespace FMOD;
 
 Channel *channel;
 
+extern "C" JNIEXPORT void JNICALL Java_com_hugh_audiofun_FmodSound_play3DSound
+        (JNIEnv *env, jclass jcls, jstring path_jstr) {
+    LOGI("%s", "--> start");
+
+    System *system;
+    Sound *sound;
+    DSP *dsp;
+//    Channel *channel;
+    float frequency;
+    bool isPlaying = true;
+
+    System_Create(&system);
+    system->init(32, FMOD_INIT_NORMAL, NULL);
+    const char *path_cstr = env->GetStringUTFChars(path_jstr, NULL);
+    FMOD_VECTOR pos = { -10.0f, 0.0f, 0.0f };
+    Reverb3D *reverb;
+    FMOD_RESULT result = system->createReverb3D(&reverb);
+
+    LOGI("createReverb3D %c", result);
+    FMOD_REVERB_PROPERTIES prop2 = FMOD_PRESET_CONCERTHALL;
+    reverb->setProperties(&prop2);
+    float mindist = 10.0f;
+    float maxdist = 20.0f;
+
+    FMOD_VECTOR  listenerpos  = { 0.0f, 0.0f, -1.0f };
+    system->set3DListenerAttributes(0, &listenerpos, 0, 0, 0);
+
+    try {
+        system->createSound(path_cstr, FMOD_DEFAULT, NULL, &sound);
+        system->playSound(sound, 0, false, &channel);
+    } catch (...) {
+        LOGE("%s", "catch exception...")
+        goto end;
+    }
+
+//    system->update();
+
+    // 每隔一秒检测是否播放结束
+    while (isPlaying) {
+        channel->isPlaying(&isPlaying);
+        usleep(1000 * 1000);
+    }
+
+    goto end;
+
+    //释放资源
+    end:
+    env->ReleaseStringUTFChars(path_jstr, path_cstr);
+    sound->release();
+    system->close();
+    system->release();
+}
 
 extern "C" JNIEXPORT jint JNICALL Java_com_hugh_audiofun_FmodSound_saveSound
         (JNIEnv *env, jclass jcls, jstring path_jstr, jstring path2_jstr, jint type) {
@@ -263,3 +315,4 @@ extern "C" JNIEXPORT jstring JNICALL Java_com_hugh_audiofun_FmodSound_getVersion
 
     return env->NewStringUTF("getVersion");
 }
+

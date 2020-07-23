@@ -21,6 +21,7 @@ import java.util.Arrays;
 
 import static com.hugh.audiofun.FmodSound.TYPE_ETHEREAL;
 import static com.hugh.audiofun.FmodSound.TYPE_LOLITA;
+import static com.hugh.audiofun.FmodSound.TYPE_TREMOLO;
 import static com.hugh.audiofun.FmodSound.TYPE_UNCLE;
 import static com.hugh.audiofun.FmodSound.getVersion;
 import static com.hugh.audiofun.FmodSound.playSound;
@@ -58,7 +59,10 @@ public class MainActivity extends AppCompatActivity {
                         playSound(path, TYPE_ETHEREAL);
                         break;
                     case TYPE_PLAY_3:
-                        Log.e("aaa","version"+getVersion());
+                        playSound(path, TYPE_TREMOLO);
+                        break;
+                    case TYPE_PLAY_4:
+                        play3D(path);
                         break;
                     case TYPE_GO:
                         Intent intent =new Intent(MainActivity.this,SoundTouchActivity.class);
@@ -78,11 +82,16 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    private void play3D(String path){
+     FmodSound.play3DSound(path);
+    }
+
     enum Item {
-        TYPE_GO("soundTouch"),
+        TYPE_GO("进入soundTouch"),
         TYPE_PLAY_1("播放萝莉"),
         TYPE_PLAY_2("播放空灵"),
-        TYPE_PLAY_3("得到版本");
+        TYPE_PLAY_3("播放颤音"),
+        TYPE_PLAY_4("混响功能使用");
 
 
 
