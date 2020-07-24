@@ -46,11 +46,11 @@ extern "C" JNIEXPORT void JNICALL Java_com_hugh_audiofun_FmodSound_play3DSound
     float mindist = 10.0f;
     float maxdist = 20.0f;
 
-    FMOD_VECTOR  listenerpos  = { 0.0f, 0.0f, -1.0f };
+    FMOD_VECTOR  listenerpos  = { 10.0f, 5.0f, -1.0f };
     system->set3DListenerAttributes(0, &listenerpos, 0, 0, 0);
 
     try {
-        system->createSound(path_cstr, FMOD_DEFAULT, NULL, &sound);
+        system->createSound(path_cstr, FMOD_3D, NULL, &sound);
         system->playSound(sound, 0, false, &channel);
     } catch (...) {
         LOGE("%s", "catch exception...")

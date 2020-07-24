@@ -31,6 +31,12 @@ import com.hugh.sound.util.ContentUtil;
 
 import androidx.annotation.Nullable;
 
+// 相关参数设置
+//tempo 速度： 降低-50％  -tempo = -50
+//BPM “每秒节拍数” 调整为60 BPM（原始值为73.9 BPM） 注意：这相当于将速度降低-18.8％
+//pitch 半音：  pitch = -3：音调降低了-3个半音  音调上升了+3个半音。pitch = + 3
+//rate 播放率：  增加了35％ 这将相当于打了33 1 / 3在45 RPM RPM黑胶唱片音频光盘
+
 public class ExampleActivity extends Activity implements OnClickListener {
     TextView textViewConsole = null;
     EditText editSourceFile = null;
@@ -57,7 +63,7 @@ public class ExampleActivity extends Activity implements OnClickListener {
         editOutputFile = (EditText) findViewById(R.id.editTextOutFileName);
 
         editTempo = (EditText) findViewById(R.id.editTextTempo);
-        editPitch = (EditText) findViewById(R.id.editTextPitch);
+        editPitch = (EditText) findViewById(R.id.editTextPitch); //半音 -3
 
         Button buttonFileSrc = (Button) findViewById(R.id.buttonSelectSrcFile);
         Button buttonFileOutput = (Button) findViewById(R.id.buttonSelectOutFile);
