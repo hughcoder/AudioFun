@@ -1,0 +1,6 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.hugh.libwebrtc" >
+    <application >
+        <activity android:name=".RtcActivity"/>
+    </application>
+</manifest>

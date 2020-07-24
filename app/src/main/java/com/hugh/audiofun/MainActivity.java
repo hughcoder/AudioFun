@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.hugh.libwebrtc.RtcActivity;
 import com.hugh.sound.SoundTouch;
 import com.hugh.sound.SoundTouchActivity;
 import com.zhl.commonadapter.BaseViewHolder;
@@ -65,8 +66,11 @@ public class MainActivity extends AppCompatActivity {
                         play3D(path);
                         break;
                     case TYPE_GO:
-                        Intent intent =new Intent(MainActivity.this,SoundTouchActivity.class);
+                        Intent intent = new Intent(MainActivity.this, SoundTouchActivity.class);
                         startActivity(intent);
+                        break;
+                    case TYPE_GO_WEBRTC:
+                        startActivity(new Intent(MainActivity.this, RtcActivity.class));
                         break;
                     default:
                         break;
@@ -77,13 +81,13 @@ public class MainActivity extends AppCompatActivity {
 //        goToSoundTouch();
     }
 
-    private void goToSoundTouch(){
+    private void goToSoundTouch() {
         Intent intent = new Intent(MainActivity.this, SoundTouchActivity.class);
         startActivity(intent);
     }
 
-    private void play3D(String path){
-     FmodSound.play3DSound(path);
+    private void play3D(String path) {
+        FmodSound.play3DSound(path);
     }
 
     enum Item {
@@ -91,8 +95,8 @@ public class MainActivity extends AppCompatActivity {
         TYPE_PLAY_1("播放萝莉"),
         TYPE_PLAY_2("播放空灵"),
         TYPE_PLAY_3("播放颤音"),
-        TYPE_PLAY_4("混响功能使用");
-
+        TYPE_PLAY_4("混响功能使用"),
+        TYPE_GO_WEBRTC("进入webRtc");
 
 
         private String title;
