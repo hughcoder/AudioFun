@@ -31,6 +31,7 @@ add_library( # Sets the name of the library.
         src/main/cpp/ns/ns_core.c
         src/main/cpp/ns/dot_product_with_scale.cc
         src/main/cpp/ns/checks.cc
+        src/main/cpp/ns/spl_sqrt_floor.c
         )
 
 

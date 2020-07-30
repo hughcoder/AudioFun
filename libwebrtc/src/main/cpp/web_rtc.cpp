@@ -1,11 +1,11 @@
 #include <jni.h>
 #include <string>
 #include "_android_log_print.h"
-#include "noise_suppression.h"
+#include "./ns/noise_suppression.h"
 //#include "analog_agc.h"
-#include "ns_core.h"
-#include "ns/noise_suppression.h"
-#include "ns/signal_processing_library.h"
+#include "./ns/ns_core.h"
+#include "./ns/noise_suppression.h"
+#include "./ns/signal_processing_library.h"
 
 
 #ifdef __cplusplus
@@ -82,7 +82,7 @@ Java_com_hugh_libwebrtc_WebRtcUtils_webRtcNsProcess32k(JNIEnv *env, jclass type,
 
                 memcpy(shBufferIn, (proData + i), 320 * sizeof(short));
                 //以高频和低频的方式传入函数内部
-                WebRtcSpl_AnalysisQMF(shBufferIn,shBufferIn, shInL, shInH, filter_state1, filter_state2);
+//                WebRtcSpl_AnalysisQMF(shBufferIn,shBufferIn, shInL, shInH, filter_state1, filter_state2);
 
 //                if (0 != WebRtcNs_Process(pNs_inst, shInL, shInH, shOutL, shOutH)) {
 //                    LOGE("Noise_Suppression WebRtcNs_Process err! \n");
@@ -123,7 +123,7 @@ Java_com_hugh_libwebrtc_WebRtcUtils_webRtcNsInit(JNIEnv *env, jclass type, jint 
     //创建降噪句柄
     pNs_inst = WebRtcNs_Create();
     LOGD("WebRtcNs_Create ==");
-    //初始化 采样率 8k 16k 32k
+    //初始化 采样率 8k 16k 32k 48k
     int result =  WebRtcNs_Init(pNs_inst, freq);
     if(result == -1){
         LOGD("WebRtcNs_Init fail");

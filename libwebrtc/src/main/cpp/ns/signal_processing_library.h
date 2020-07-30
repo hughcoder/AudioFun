@@ -94,10 +94,10 @@ extern "C" {
   memcpy(v1, v2, (length) * sizeof(int16_t))
 
 // inline functions:
-#include "common_audio/signal_processing/include/spl_inl.h"
+#include "./spl_inl.h"
 
 // third party math functions
-#include "common_audio/third_party/spl_sqrt_floor/spl_sqrt_floor.h"
+#include "./spl_sqrt_floor.h"
 
 // Initialize SPL. Currently it contains only function pointer initialization.
 // If the underlying platform is known to be ARM-Neon (WEBRTC_HAS_NEON defined),

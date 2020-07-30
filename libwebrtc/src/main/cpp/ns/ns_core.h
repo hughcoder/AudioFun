@@ -11,7 +11,7 @@
 #ifndef MODULES_AUDIO_PROCESSING_NS_NS_CORE_H_
 #define MODULES_AUDIO_PROCESSING_NS_NS_CORE_H_
 
-#include "/ns/defines.h"
+#include "./defines.h"
 #include "defines.h"
 
 typedef struct NSParaExtract_ {

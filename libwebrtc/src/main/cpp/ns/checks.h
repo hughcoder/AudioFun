@@ -42,9 +42,9 @@ RTC_NORETURN void rtc_FatalMessage(const char* file, int line, const char* msg);
 
 #include <string>
 
-#include "absl/strings/string_view.h"
-#include "rtc_base/numerics/safe_compare.h"
-#include "rtc_base/system/inline.h"
+//#include "absl/strings/string_view.h"  //absl 不相关
+#include "./safe_compare.h"
+#include "./inline.h"
 
 // The macros here print a message to stderr and abort under various
 // conditions. All will accept additional stream messages. For example:
@@ -159,10 +159,10 @@ inline Val<CheckArgType::kStdString, const std::string*> MakeVal(
     const std::string& x) {
   return {&x};
 }
-inline Val<CheckArgType::kStringView, const absl::string_view*> MakeVal(
-    const absl::string_view& x) {
-  return {&x};
-}
+//inline Val<CheckArgType::kStringView, const absl::string_view*> MakeVal(
+//    const absl::string_view& x) {
+//  return {&x};
+//}
 
 inline Val<CheckArgType::kVoidP, const void*> MakeVal(const void* x) {
   return {x};
