@@ -4,10 +4,36 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <TextView
+    <RadioGroup
+        android:id="@+id/rg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <RadioButton
+            android:id="@+id/rb_8k"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="测试 Hz_8000" />
+
+        <RadioButton
+            android:id="@+id/rb_16k"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="测试 Hz_16000" />
+
+        <RadioButton
+            android:id="@+id/rb_32k"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="测试 Hz_32000" />
+    </RadioGroup>
+
+
+    <Button
+        android:id="@+id/ns_audio"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="webRtc"
-        android:textSize="30sp" />
+        android:text="音频降噪处理" />
 
 </LinearLayout>
