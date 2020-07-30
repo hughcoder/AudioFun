@@ -2,7 +2,6 @@ package com.hugh.libwebrtc;
 
 import android.os.Bundle;
 
-import org.webrtc.PeerConnection;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
