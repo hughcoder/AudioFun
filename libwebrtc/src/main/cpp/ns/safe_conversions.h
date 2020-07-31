@@ -15,8 +15,11 @@
 
 #include <limits>
 
-#include "./checks.h"
-#include "./safe_conversions_impl.h"
+// #include "rtc_base/checks.h"
+#include "checks.h"
+// #include "rtc_base/numerics/safe_conversions_impl.h"
+#include "safe_conversions_impl.h"
+
 
 namespace rtc {
 

@@ -8,9 +8,12 @@
  *  be found in the AUTHORS file in the root of the source tree.
  */
 
-#include "./dot_product_with_scale.h"
+// #include "common_audio/signal_processing/dot_product_with_scale.h"
+#include "dot_product_with_scale.h"
 
-#include "./safe_conversions.h"
+
+// #include "rtc_base/numerics/safe_conversions.h"
+#include "safe_conversions.h"
 
 int32_t WebRtcSpl_DotProductWithScale(const int16_t* vector1,
                                       const int16_t* vector2,

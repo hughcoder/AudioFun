@@ -11,8 +11,9 @@
 #ifndef MODULES_AUDIO_PROCESSING_NS_NS_CORE_H_
 #define MODULES_AUDIO_PROCESSING_NS_NS_CORE_H_
 
-#include "./defines.h"
-#include "defines.h"
+//#include "modules/audio_processing/ns/defines.h" // 原有的
+#include "defines.h"		// 添加的
+
 
 typedef struct NSParaExtract_ {
   // Bin size of histogram.

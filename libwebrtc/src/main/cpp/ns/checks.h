@@ -40,11 +40,13 @@ RTC_NORETURN void rtc_FatalMessage(const char* file, int line, const char* msg);
 #ifdef __cplusplus
 // C++ version.
 
+#include <sstream>  // no-presubmit-check TODO(webrtc:8982)
 #include <string>
-
-//#include "absl/strings/string_view.h"  //absl 不相关
-#include "./safe_compare.h"
-#include "./inline.h"
+//
+//#include "rtc_base/numerics/safe_compare.h"
+//#include "rtc_base/system/inline.h"
+#include "safe_compare.h"
+#include "inline.h"
 
 // The macros here print a message to stderr and abort under various
 // conditions. All will accept additional stream messages. For example:
@@ -100,7 +102,6 @@ enum class CheckArgType : int8_t {
   kLongDouble,
   kCharP,
   kStdString,
-  kStringView,
   kVoidP,
 
   // kCheckOp doesn't represent an argument type. Instead, it is sent as the
@@ -159,23 +160,9 @@ inline Val<CheckArgType::kStdString, const std::string*> MakeVal(
     const std::string& x) {
   return {&x};
 }
-//inline Val<CheckArgType::kStringView, const absl::string_view*> MakeVal(
-//    const absl::string_view& x) {
-//  return {&x};
-//}
 
 inline Val<CheckArgType::kVoidP, const void*> MakeVal(const void* x) {
   return {x};
-}
-
-// The enum class types are not implicitly convertible to arithmetic types.
-template <
-    typename T,
-    typename std::enable_if<std::is_enum<T>::value &&
-                            !std::is_arithmetic<T>::value>::type* = nullptr>
-inline decltype(MakeVal(std::declval<typename std::underlying_type<T>::type>()))
-MakeVal(T x) {
-  return {static_cast<typename std::underlying_type<T>::type>(x)};
 }
 
 // Ephemeral type that represents the result of the logging << operator.
@@ -186,18 +173,18 @@ class LogStreamer;
 template <>
 class LogStreamer<> final {
  public:
-  template <typename U,
-            typename std::enable_if<std::is_arithmetic<U>::value ||
-                                    std::is_enum<U>::value>::type* = nullptr>
+  template <
+      typename U,
+      typename std::enable_if<std::is_arithmetic<U>::value>::type* = nullptr>
   RTC_FORCE_INLINE LogStreamer<decltype(MakeVal(std::declval<U>()))> operator<<(
       U arg) const {
     return LogStreamer<decltype(MakeVal(std::declval<U>()))>(MakeVal(arg),
                                                              this);
   }
 
-  template <typename U,
-            typename std::enable_if<!std::is_arithmetic<U>::value &&
-                                    !std::is_enum<U>::value>::type* = nullptr>
+  template <
+      typename U,
+      typename std::enable_if<!std::is_arithmetic<U>::value>::type* = nullptr>
   RTC_FORCE_INLINE LogStreamer<decltype(MakeVal(std::declval<U>()))> operator<<(
       const U& arg) const {
     return LogStreamer<decltype(MakeVal(std::declval<U>()))>(MakeVal(arg),
@@ -232,18 +219,18 @@ class LogStreamer<T, Ts...> final {
   RTC_FORCE_INLINE LogStreamer(T arg, const LogStreamer<Ts...>* prior)
       : arg_(arg), prior_(prior) {}
 
-  template <typename U,
-            typename std::enable_if<std::is_arithmetic<U>::value ||
-                                    std::is_enum<U>::value>::type* = nullptr>
+  template <
+      typename U,
+      typename std::enable_if<std::is_arithmetic<U>::value>::type* = nullptr>
   RTC_FORCE_INLINE LogStreamer<decltype(MakeVal(std::declval<U>())), T, Ts...>
   operator<<(U arg) const {
     return LogStreamer<decltype(MakeVal(std::declval<U>())), T, Ts...>(
         MakeVal(arg), this);
   }
 
-  template <typename U,
-            typename std::enable_if<!std::is_arithmetic<U>::value &&
-                                    !std::is_enum<U>::value>::type* = nullptr>
+  template <
+      typename U,
+      typename std::enable_if<!std::is_arithmetic<U>::value>::type* = nullptr>
   RTC_FORCE_INLINE LogStreamer<decltype(MakeVal(std::declval<U>())), T, Ts...>
   operator<<(const U& arg) const {
     return LogStreamer<decltype(MakeVal(std::declval<U>())), T, Ts...>(

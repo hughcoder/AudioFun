@@ -27,11 +27,14 @@ add_library( # Sets the name of the library.
         src/main/cpp/web_rtc.cpp
 
         src/main/cpp/ns/noise_suppression.c
-        src/main/cpp/ns/fft4g.c
+#        src/main/cpp/ns/noise_suppression_x.c
         src/main/cpp/ns/ns_core.c
+#        src/main/cpp/ns/nsx_core.c
+#        src/main/cpp/ns/nsx_core_mips.c
+#        src/main/cpp/ns/nsx_core_neon.c
+        src/main/cpp/ns/fft4g.c
         src/main/cpp/ns/dot_product_with_scale.cc
         src/main/cpp/ns/checks.cc
-        src/main/cpp/ns/spl_sqrt_floor.c
         )
 
 

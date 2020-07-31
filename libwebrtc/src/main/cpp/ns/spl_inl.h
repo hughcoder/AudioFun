@@ -14,7 +14,9 @@
 #ifndef COMMON_AUDIO_SIGNAL_PROCESSING_INCLUDE_SPL_INL_H_
 #define COMMON_AUDIO_SIGNAL_PROCESSING_INCLUDE_SPL_INL_H_
 
-#include "./compile_assert_c.h"
+// #include "rtc_base/compile_assert_c.h"
+#include "compile_assert_c.h"
+
 
 extern const int8_t kWebRtcSpl_CountLeadingZeros32_Table[64];
 

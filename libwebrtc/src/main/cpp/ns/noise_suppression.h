@@ -13,6 +13,7 @@
 
 #include <stddef.h>
 #include <stdint.h>
+#include "type_traits.h"  // NOLINT(build/include)
 
 typedef struct NsHandleT NsHandle;
 

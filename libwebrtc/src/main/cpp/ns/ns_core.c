@@ -12,12 +12,19 @@
 #include <string.h>
 #include <stdlib.h>
 
+// #include "rtc_base/checks.h"
+// #include "common_audio/fft4g.h"
+// #include "common_audio/signal_processing/include/signal_processing_library.h"
+// #include "modules/audio_processing/ns/noise_suppression.h"
+// #include "modules/audio_processing/ns/ns_core.h"
+// #include "modules/audio_processing/ns/windows_private.h"
+
 #include "checks.h"
-#include "./signal_processing_library.h"
-#include "./fft4g.h"
-#include "./noise_suppression.h"
-#include "./ns_core.h"
-#include "./windows_private.h"
+#include "fft4g.c"
+#include "signal_processing_library.h"
+#include "noise_suppression.h"
+#include "ns_core.h"
+#include "windows_private.h"
 
 // Set Feature Extraction Parameters.
 static void set_feature_extraction_parameters(NoiseSuppressionC* self) {

@@ -18,7 +18,9 @@
 #define COMMON_AUDIO_SIGNAL_PROCESSING_INCLUDE_SIGNAL_PROCESSING_LIBRARY_H_
 
 #include <string.h>
-#include "./dot_product_with_scale.h"
+// #include "common_audio/signal_processing/dot_product_with_scale.h"
+#include "dot_product_with_scale.h"
+#include "typedefs.h"  // NOLINT(build/include)
 
 // Macros specific for the fixed point implementation
 #define WEBRTC_SPL_WORD16_MAX 32767
@@ -94,10 +96,9 @@ extern "C" {
   memcpy(v1, v2, (length) * sizeof(int16_t))
 
 // inline functions:
-#include "./spl_inl.h"
+//#include "common_audio/signal_processing/include/spl_inl.h"
+#include "spl_inl.h"
 
-// third party math functions
-#include "./spl_sqrt_floor.h"
 
 // Initialize SPL. Currently it contains only function pointer initialization.
 // If the underlying platform is known to be ARM-Neon (WEBRTC_HAS_NEON defined),
@@ -576,6 +577,7 @@ int16_t WebRtcSpl_RandUArray(int16_t* vector,
 
 // Math functions
 int32_t WebRtcSpl_Sqrt(int32_t value);
+int32_t WebRtcSpl_SqrtFloor(int32_t value);
 
 // Divisions. Implementations collected in division_operations.c and
 // descriptions at bottom of this file.
@@ -1329,6 +1331,23 @@ void WebRtcSpl_SynthesisQMF(const int16_t* low_band,
 // x = y-1
 //   = 1+(x/2)-0.5*((x/2)^2+0.5*((x/2)^3-0.625*((x/2)^4+0.875*((x/2)^5)
 // 0.5 <= x < 1
+//
+// Input:
+//      - value     : Value to calculate sqrt of
+//
+// Return value     : Result of the sqrt calculation
+//
+
+//
+// WebRtcSpl_SqrtFloor(...)
+//
+// Returns the square root of the input value |value|. The precision of this
+// function is rounding down integer precision, i.e., sqrt(8) gives 2 as answer.
+// If |value| is a negative number then 0 is returned.
+//
+// Algorithm:
+//
+// An iterative 4 cylce/bit routine
 //
 // Input:
 //      - value     : Value to calculate sqrt of
