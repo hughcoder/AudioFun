@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <TextView
+        android:id="@+id/tv_current_file"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="26sp"/>
+
+    <TextView
+        android:id="@+id/recordHintTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/larger_margin"
+        android:textColor="@color/black"
+        android:textSize="@dimen/normal_text_size" />
+
+    <TextView
+        android:id="@+id/recordDurationView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/recordHintTextView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/normal_margin"
+        android:gravity="center_horizontal"
+        android:textColor="@color/black"
+        android:textSize="@dimen/large_text_size" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/recordDurationView"
+        android:layout_marginTop="@dimen/normal_margin"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/recordVoiceButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/voice_button_padding"
+            android:text="录音"
+            android:textColor="@color/white"
+            android:textSize="@dimen/normal_text_size" />
+
+        <Button
+            android:id="@+id/composeVoiceButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/voice_button_top_margin"
+            android:padding="@dimen/voice_button_padding"
+            android:visibility="gone"
+            android:text="合成"
+            android:textColor="@color/white"
+            android:textSize="@dimen/normal_text_size" />
+
+        <Button
+            android:id="@+id/deleteVoiceButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/voice_button_top_margin"
+            android:padding="@dimen/voice_button_padding"
+            android:text="删除"
+            android:textColor="@color/white"
+            android:textSize="@dimen/normal_text_size" />
+
+        <Button
+            android:id="@+id/voice_operate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="音频调节处理"/>
+
+        <Button
+            android:id="@+id/playComposeVoiceButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/voice_button_top_margin"
+            android:padding="@dimen/voice_button_padding"
+            android:text="播放合成语音"
+            android:visibility="gone"
+            android:textColor="@color/white"
+            android:textSize="@dimen/normal_text_size" />
+
+        <ProgressBar
+            android:id="@+id/composeProgressBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/voice_button_top_margin"
+            android:max="100"
+            android:maxHeight="5dip"
+            android:minHeight="5dip"
+            android:padding="@dimen/compose_progressBar_padding"
+            android:progressDrawable="@drawable/progress_bar_compose_voice"
+            android:visibility="gone" />
+    </LinearLayout>
+
+</RelativeLayout>

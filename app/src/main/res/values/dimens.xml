@@ -1,0 +1,10 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="normal_margin">20dp</dimen>
+    <dimen name="larger_margin">50dp</dimen>
+    <dimen name="voice_button_padding">10dp</dimen>
+    <dimen name="voice_button_top_margin">30dp</dimen>
+    <dimen name="compose_progressBar_padding">10dp</dimen>
+    <dimen name="normal_text_size">15sp</dimen>
+    <dimen name="large_text_size">20sp</dimen>
+</resources>

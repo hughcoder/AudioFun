@@ -2,6 +2,7 @@
 
 音频操作的尝试  fmod  soundTouch webRtc
 
+对自己的录音进行调节
 
 ## SoundTouch
 
