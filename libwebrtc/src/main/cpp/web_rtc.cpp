@@ -4,8 +4,8 @@
 #include "./ns/noise_suppression.h"
 //#include "analog_agc.h"
 #include "./ns/ns_core.h"
-#include "./ns/noise_suppression.h"
-#include "./ns/signal_processing_library.h"
+//#include "./ns/noise_suppression.h"
+//#include "./ns/signal_processing_library.h"
 
 
 #ifdef __cplusplus

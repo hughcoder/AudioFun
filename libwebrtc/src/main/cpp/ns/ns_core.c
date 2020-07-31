@@ -20,7 +20,7 @@
 // #include "modules/audio_processing/ns/windows_private.h"
 
 #include "checks.h"
-#include "fft4g.c"
+#include "fft4g.h"
 #include "signal_processing_library.h"
 #include "noise_suppression.h"
 #include "ns_core.h"
