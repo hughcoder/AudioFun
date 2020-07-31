@@ -1,10 +1,14 @@
 package com.hugh.libwebrtc;
 
+import android.Manifest;
+import android.app.Activity;
+import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioRecord;
 import android.media.AudioTrack;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.text.TextUtils;
@@ -23,14 +27,15 @@ import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 /**
  * Created by chenyw on 2020/7/24.
  */
-public class RtcActivity extends AppCompatActivity implements View.OnClickListener {
+public class RtcActivity extends Activity implements View.OnClickListener {
 
     private static final int SAMPLERATE_32K = 32000;
     private static final int SAMPLERATE_16K = 16000;
@@ -110,6 +115,23 @@ public class RtcActivity extends AppCompatActivity implements View.OnClickListen
                 switchDataSrc(checkedId);
             }
         });
+        mThreadExecutor = Executors.newScheduledThreadPool(3);
+
+        //初始化
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && PackageManager.PERMISSION_GRANTED != ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1000);
+        } else {
+            initAudioFile();
+        }
+    }
+
+    private void initAudioFile() {
+        mSampleRate = SAMPLERATE_8K;
+        AUDIO_FILE_PATH = AUDIO_FILE_PATH_8k;
+        AUDIO_PROCESS_FILE_PATH = AUDIO_PROCESS_FILE_PATH_8k;
+        srcPath = AUDIO_FILE_AST_8K;
+        initAudio();
+        initAudioRecord();
     }
 
     private void switchDataSrc(int rbId) {
@@ -136,12 +158,20 @@ public class RtcActivity extends AppCompatActivity implements View.OnClickListen
             AUDIO_PROCESS_FILE_PATH = AUDIO_PROCESS_FILE_PATH_32k;
             srcPath = AUDIO_FILE_AST_32k;
         }
+
+        initAudio();
+        initAudioRecord();
     }
 
     @Override
     public void onClick(View v) {
         if (v == mBtnNsOperate) {
+            if (!isInitialized || !mFile.exists()) {
+                Toast.makeText(this, "文件读写失败", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
+            process();
         }
     }
 
@@ -254,6 +284,7 @@ public class RtcActivity extends AppCompatActivity implements View.OnClickListen
 //                                WebRtcUtils.webRtcAgcProcess(nsProcessData, processData, shortData.length);
                                 out.write(shortsToBytes(nsProcessData));
                             } else if (selectId == R.id.rb_8k) {
+                                Log.e("aaa", "shortData.length---->" + shortData.length);
                                 nsProcessData = WebRtcUtils.webRtcNsProcess(mSampleRate, shortData.length, shortData);
 //                                WebRtcUtils.webRtcAgcProcess(nsProcessData, processData, nsProcessData.length);
                                 out.write(shortsToBytes(nsProcessData));

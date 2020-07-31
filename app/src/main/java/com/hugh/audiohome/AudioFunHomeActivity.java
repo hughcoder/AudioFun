@@ -1,5 +1,6 @@
 package com.hugh.audiohome;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -30,7 +31,7 @@ import androidx.appcompat.app.AppCompatActivity;
 /**
  * Created by chenyw on 2020/7/30.
  */
-public class AudioFunHomeActivity extends AppCompatActivity implements VoicePlayerInterface, DecodeOperateInterface, ComposeAudioInterface, VoiceRecorderOperateInterface {
+public class AudioFunHomeActivity extends Activity implements VoicePlayerInterface, DecodeOperateInterface, ComposeAudioInterface, VoiceRecorderOperateInterface {
     private boolean recordVoiceBegin;
 
     private int width;

@@ -2,6 +2,7 @@ package com.hugh.audiofun;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -28,7 +29,7 @@ import static com.hugh.audiofun.FmodSound.TYPE_UNCLE;
 import static com.hugh.audiofun.FmodSound.getVersion;
 import static com.hugh.audiofun.FmodSound.playSound;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
     private CommonAdapter<Item> mAdapter;
     String path = "file:///android_asset/lightlesson_excellent.mp3";
 

@@ -5,11 +5,11 @@
 
 #include <android/log.h>
 
-//#define IS_DEBUG
+#define IS_DEBUG
 
 #ifdef IS_DEBUG
 
-#define LOG_TAG ("SWS_LOG_TEST")
+#define LOG_TAG ("AUDIO_FUN_LOG_TEST")
 
 #define LOGV(...) ((void)__android_log_print(ANDROID_LOG_VERBOSE, LOG_TAG, __VA_ARGS__))
 
