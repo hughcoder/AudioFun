@@ -23,9 +23,9 @@ public class WebRtcNsUtils {
 
     public static native int nsFree(long nsHandler);
 
-    public static native long WebRtcNs_Create();
+    public static native long WebRtcNsx_Create();
 
-    public static native int WebRtcNs_Init(long nsxHandler, int frequency);
+    public static native int WebRtcNsx_Init(long nsxHandler, int frequency);
 
     /**
      * @param mode 0: Mild, 1: Medium , 2: Aggressive
@@ -34,9 +34,9 @@ public class WebRtcNsUtils {
      */
     public static native int nsxSetPolicy(long nsxHandler, int mode);
 
-    public static native int WebRtcNs_Process(long nsxHandler, short[] speechFrame, int num_bands, short[] outframe);
+    public static native int WebRtcNsx_Process(long nsxHandler, short[] speechFrame, int num_bands, short[] outframe);
 
-    public static native int WebRtcNs_Free(long nsxHandler);
+    public static native int WebRtcNsx_Free(long nsxHandler);
 
     private static native short[] WebRtcNs_ProcessShort(long NS_inst, short[] spframe, int sampleMS);
 
@@ -50,11 +50,11 @@ public class WebRtcNsUtils {
          * @param mode 模式(0: Mild, 1: Medium , 2: Aggressive)
          */
         public WebRtcNs(int fs,int mode){
-            ctx = WebRtcNs_Create();
+            ctx = WebRtcNsx_Create();
             if(ctx == 0){
                 throw new RuntimeException("WebRtcNs_Create failed");
             }
-            WebRtcNs_Init(ctx,fs);
+            WebRtcNsx_Init(ctx,fs);
             WebRtcNs_set_policy(ctx,mode);
         }
 
@@ -63,7 +63,7 @@ public class WebRtcNsUtils {
          */
         public void release(){
             if(ctx != 0 ){
-                WebRtcNs_Free(ctx);
+                WebRtcNsx_Free(ctx);
                 ctx = 0;
             }
         }

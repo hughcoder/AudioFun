@@ -12,7 +12,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.hugh.audiohome.AudioFunHomeActivity;
+import com.hugh.libwebrtc.AFRtcMainActivity;
 import com.hugh.libwebrtc.RtcActivity;
+import com.hugh.libwebrtc.kt.RtcFileActivity;
 import com.hugh.sound.SoundTouch;
 import com.hugh.sound.SoundTouchActivity;
 import com.zhl.commonadapter.BaseViewHolder;
@@ -77,6 +79,9 @@ public class MainActivity extends Activity {
                     case TYPE_GO_FUN_AUDIO:
                         startActivity(new Intent(MainActivity.this, AudioFunHomeActivity.class));
                         break;
+                    case TYPE_GO_WEBRTC2:
+                        startActivity(new Intent(MainActivity.this, RtcFileActivity.class));
+                        break;
                     default:
                         break;
                 }
@@ -102,6 +107,7 @@ public class MainActivity extends Activity {
         TYPE_PLAY_3("播放颤音"),
         TYPE_PLAY_4("混响功能使用"),
         TYPE_GO_WEBRTC("进入webRtc"),
+        TYPE_GO_WEBRTC2("进入webRtc2"),
         TYPE_GO_FUN_AUDIO("进入录音调节页面");
 
 

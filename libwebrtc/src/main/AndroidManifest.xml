@@ -3,5 +3,6 @@
     <application >
         <activity android:name=".RtcActivity"/>
         <activity android:name=".AFRtcMainActivity"/>
+        <activity android:name=".kt.RtcFileActivity"/>
     </application>
 </manifest>

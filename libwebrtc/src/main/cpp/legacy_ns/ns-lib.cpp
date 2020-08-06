@@ -69,14 +69,14 @@ Java_com_hugh_libwebrtc_WebRtcNsUtils_nsFree(JNIEnv *env,
 }
 
 JNIEXPORT jlong JNICALL
-Java_com_hugh_libwebrtc_WebRtcNsUtils_WebRtcNs_1Create(JNIEnv *env, jclass obj) {
+Java_com_hugh_libwebrtc_WebRtcNsUtils_WebRtcNsx_1Create(JNIEnv *env, jclass obj) {
     return (long) WebRtcNsx_Create();
 }
 
 
 JNIEXPORT jint JNICALL
-Java_com_hugh_libwebrtc_WebRtcNsUtils_WebRtcNs_1Init(JNIEnv *env, jclass obj, jlong nsHandler,
-                                                     jint frequency
+Java_com_hugh_libwebrtc_WebRtcNsUtils_WebRtcNsx_1Init(JNIEnv *env, jclass obj, jlong nsHandler,
+                                                      jint frequency
 ) {
     NsxHandle *handler = (NsxHandle *) nsHandler;
     if (handler == nullptr) {
@@ -101,12 +101,12 @@ Java_com_hugh_libwebrtc_WebRtcNsUtils_nsxSetPolicy(JNIEnv *env,
 
 
 JNIEXPORT jint JNICALL
-Java_com_hugh_libwebrtc_WebRtcNsUtils_WebRtcNs_1Process(JNIEnv *env,
-                                                        jclass obj, jlong
+Java_com_hugh_libwebrtc_WebRtcNsUtils_WebRtcNsx_1Process(JNIEnv *env,
+                                                         jclass obj, jlong
                                                         nsHandler,
-                                                        jshortArray speechFrame,
-                                                        jint num_bands,
-                                                        jshortArray outframe) {
+                                                         jshortArray speechFrame,
+                                                         jint num_bands,
+                                                         jshortArray outframe) {
     NsxHandle *handle = (NsxHandle *) nsHandler;
     if (handle == nullptr) {
         return -3;
@@ -142,7 +142,7 @@ Java_com_hugh_libwebrtc_WebRtcNsUtils_WebRtcNs_1ProcessShort(JNIEnv* env, jclass
 }
 
 JNIEXPORT jint JNICALL
-Java_com_hugh_libwebrtc_WebRtcNsUtils_WebRtcNs_1Free(JNIEnv *env, jclass obj, jlong nsHandler) {
+Java_com_hugh_libwebrtc_WebRtcNsUtils_WebRtcNsx_1Free(JNIEnv *env, jclass obj, jlong nsHandler) {
     NsxHandle *handle = (NsxHandle *) nsHandler;
     if (handle == nullptr) {
         return -3;

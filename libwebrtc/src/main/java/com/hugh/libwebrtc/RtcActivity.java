@@ -2,7 +2,6 @@ package com.hugh.libwebrtc;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 import android.media.AudioFormat;
@@ -125,7 +124,7 @@ public class RtcActivity extends Activity implements View.OnClickListener {
             initAudioFile();
         }
 
-        startActivity(new Intent(RtcActivity.this,AFRtcMainActivity.class));
+//        startActivity(new Intent(RtcActivity.this,AFRtcMainActivity.class));
     }
 
     private void initAudioFile() {
@@ -281,16 +280,16 @@ public class RtcActivity extends Activity implements View.OnClickListener {
 //                            WebRtcUtils.webRtcAgcProcess32k(nsProcessData, processData, nsProcessData.length);
 //                            out.write(shortsToBytes(processData));
                         } else {
-                            short[] nsProcessData;
+                            short[] nsProcessData = new short[160];
                             if (selectId == R.id.rb_16k) {
 //                                nsProcessData = WebRtcNsUtils.webRtcNsProcess(mSampleRate, shortData.length, shortData);
 //                                WebRtcUtils.webRtcAgcProcess(nsProcessData, processData, shortData.length);
 //                                out.write(shortsToBytes(nsProcessData));
                             } else if (selectId == R.id.rb_8k) {
                                 Log.e("aaa", "shortData.length---->" + shortData.length);
-//                                nsProcessData = WebRtcNsUtils.webRtcNsProcess(mSampleRate, shortData.length, shortData);
+//                                 WebRtcNsUtils.WebRtcNsx_Process(WebRtcNs, shortData,1, nsProcessData);
 //                                WebRtcUtils.webRtcAgcProcess(nsProcessData, processData, nsProcessData.length);
-//                                out.write(shortsToBytes(nsProcessData));
+                                out.write(shortsToBytes(nsProcessData));
                             }
                         }
 
