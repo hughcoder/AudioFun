@@ -2,5 +2,6 @@
     package="com.hugh.libwebrtc" >
     <application >
         <activity android:name=".RtcActivity"/>
+        <activity android:name=".AFRtcMainActivity"/>
     </application>
 </manifest>

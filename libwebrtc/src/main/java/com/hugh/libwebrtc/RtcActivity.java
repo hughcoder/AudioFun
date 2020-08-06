@@ -2,6 +2,7 @@ package com.hugh.libwebrtc;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 import android.media.AudioFormat;
@@ -123,6 +124,8 @@ public class RtcActivity extends Activity implements View.OnClickListener {
         } else {
             initAudioFile();
         }
+
+        startActivity(new Intent(RtcActivity.this,AFRtcMainActivity.class));
     }
 
     private void initAudioFile() {
@@ -243,7 +246,7 @@ public class RtcActivity extends Activity implements View.OnClickListener {
             @Override
             public void run() {
 //                WebRtcUtils.webRtcAgcInit(0, 255, mSampleRate);
-                WebRtcUtils.webRtcNsInit(mSampleRate);
+//                WebRtcNsUtils.webRtcNsInit(mSampleRate);
 
                 Log.e("sws", "====mSampleRate=" + mSampleRate + ": process32KData=" + process32KData);
                 FileInputStream ins = null;
@@ -280,14 +283,14 @@ public class RtcActivity extends Activity implements View.OnClickListener {
                         } else {
                             short[] nsProcessData;
                             if (selectId == R.id.rb_16k) {
-                                nsProcessData = WebRtcUtils.webRtcNsProcess(mSampleRate, shortData.length, shortData);
+//                                nsProcessData = WebRtcNsUtils.webRtcNsProcess(mSampleRate, shortData.length, shortData);
 //                                WebRtcUtils.webRtcAgcProcess(nsProcessData, processData, shortData.length);
-                                out.write(shortsToBytes(nsProcessData));
+//                                out.write(shortsToBytes(nsProcessData));
                             } else if (selectId == R.id.rb_8k) {
                                 Log.e("aaa", "shortData.length---->" + shortData.length);
-                                nsProcessData = WebRtcUtils.webRtcNsProcess(mSampleRate, shortData.length, shortData);
+//                                nsProcessData = WebRtcNsUtils.webRtcNsProcess(mSampleRate, shortData.length, shortData);
 //                                WebRtcUtils.webRtcAgcProcess(nsProcessData, processData, nsProcessData.length);
-                                out.write(shortsToBytes(nsProcessData));
+//                                out.write(shortsToBytes(nsProcessData));
                             }
                         }
 
@@ -302,7 +305,7 @@ public class RtcActivity extends Activity implements View.OnClickListener {
                     e.printStackTrace();
                 } finally {
                     isProcessing = false;
-                    WebRtcUtils.webRtcNsFree();
+//                    WebRtcNsUtils.webRtcNsFree();
                     if (out != null) {
                         try {
                             out.close();
@@ -323,6 +326,7 @@ public class RtcActivity extends Activity implements View.OnClickListener {
         });
 
     }
+
 
     private byte[] shortsToBytes(short[] data) {
         byte[] buffer = new byte[data.length * 2];

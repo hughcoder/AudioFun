@@ -38,7 +38,7 @@ android {
 
     externalNativeBuild {
         cmake {
-            path "CMakeLists.txt"
+            path "src/main/cpp/CMakeLists.txt"
         }
     }
 }
@@ -52,4 +52,5 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation "io.reactivex.rxjava2:rxjava:2.1.12"
     implementation "io.reactivex.rxjava2:rxandroid:2.0.2"
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
 }
