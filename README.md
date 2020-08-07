@@ -4,6 +4,11 @@
 
 对自己的录音进行调节
 
+### 变声对比以及基础概念
+
+[音视频开发之旅(五)](https://blog.csdn.net/qq_38366777/article/details/107405903)
+
+
 ## SoundTouch
 
 ### 相关参数概念
