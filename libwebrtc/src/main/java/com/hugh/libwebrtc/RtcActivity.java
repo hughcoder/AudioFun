@@ -282,7 +282,7 @@ public class RtcActivity extends Activity implements View.OnClickListener {
                         WebRtcNsUtils.WebRtcNsx_Process(nsxId, inputData, num_bands, nsProcessData);
                         if (mIsOpenAgc) {
                             int ret = WebRtcAGCUtils.agcProcess(agcId, nsProcessData, num_bands, 80, outAgcData, 0, 0, 0, false);
-                            Log.e("aaa", "agc--->ret" + ret);
+//                            Log.e("aaa", "agc--->ret" + ret);
                             out.write(shortsToBytes(outAgcData));
                         } else {
                             out.write(shortsToBytes(nsProcessData));
