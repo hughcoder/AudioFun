@@ -15,7 +15,9 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.RadioGroup;
+import android.widget.Switch;
 import android.widget.Toast;
 
 
@@ -45,9 +47,6 @@ public class RtcActivity extends Activity implements View.OnClickListener {
     private static final String AUDIO_FILE_AST_8K = "record/recorded_audio.pcm";
     private static final String AUDIO_FILE_AST_16k = "record/recorded_audio_16k.pcm";
     private static final String AUDIO_FILE_AST_32k = "record/recorded_audio_32k.pcm";
-    private static final String AUDIO_FILE_AST_44k = "record/recorded_audio_44k.pcm";
-    //    private static final String AUDIO_FILE_AST_32k = "record/test_32k.pcm";
-    private static final String AUDIO_FILE_AST_32k_TEST = "record/recorded_audio_fun.pcm";
 
     /**
      * 原始音频文件路径
@@ -58,12 +57,7 @@ public class RtcActivity extends Activity implements View.OnClickListener {
             "/recorded_audio_16k.pcm";
     private static final String AUDIO_FILE_PATH_32K = Environment.getExternalStorageDirectory().getPath() +
             "/recorded_audio_32k.pcm";
-    private static final String AUDIO_FILE_PATH_44K = Environment.getExternalStorageDirectory().getPath() +
-            "/recorded_audio_44k.pcm";
-    //    private static final String AUDIO_FILE_PATH_32K = Environment.getExternalStorageDirectory().getPath() +
-    //            "/test_32k.pcm";
-    private static final String AUDIO_FILE_PATH_32K_TEST = Environment.getExternalStorageDirectory().getPath() +
-            "/recorded_audio_fun.pcm";
+
     /**
      * 处理过的音频文件路径
      */
@@ -73,13 +67,6 @@ public class RtcActivity extends Activity implements View.OnClickListener {
             "/recorded_audio_process_16k.pcm";
     private static final String AUDIO_PROCESS_FILE_PATH_32k = Environment.getExternalStorageDirectory().getPath() +
             "/recorded_audio_process_32k.pcm";
-    //    private static final String AUDIO_PROCESS_FILE_PATH_32k = Environment.getExternalStorageDirectory().getPath
-    //    () +
-    //            "/test_process_32k.pcm";
-    private static final String AUDIO_PROCESS_FILE_PATH_44k = Environment.getExternalStorageDirectory().getPath() +
-            "/recorded_audio_process_44k.pcm";
-    private static final String AUDIO_PROCESS_FILE_PATH_32k_TEST = Environment.getExternalStorageDirectory().getPath() +
-            "/recorded_audio_process_fun.pcm";
 
 
     private Button mBtnNsOperate;
@@ -97,11 +84,30 @@ public class RtcActivity extends Activity implements View.OnClickListener {
     private ExecutorService mThreadExecutor;
     private int selectId = -1;
     private boolean isPlaying;
+    private Switch agc_switch;
+    private boolean mIsOpenAgc;
+    private long nsxId; //ns降噪id
+    private long agcId; //agc增益id
+    private int num_bands = 1;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.module_rtc_activity_main);
+        agc_switch = findViewById(R.id.agc_switch);
+        agc_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                mIsOpenAgc = isChecked;
+                if (isChecked) {
+                    Toast.makeText(RtcActivity.this, "开启agc增益", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(RtcActivity.this, "开启agc增益", Toast.LENGTH_LONG).show();
+                }
+                Log.e("aaa", "mIsOpenAgc------>" + mIsOpenAgc);
+            }
+        });
         mBtnNsOperate = findViewById(R.id.ns_audio);
         mBtnNsOperate.setOnClickListener(this);
         selectId = R.id.rb_8k;
@@ -123,9 +129,8 @@ public class RtcActivity extends Activity implements View.OnClickListener {
         } else {
             initAudioFile();
         }
-
-//        startActivity(new Intent(RtcActivity.this,AFRtcMainActivity.class));
     }
+
 
     private void initAudioFile() {
         mSampleRate = SAMPLERATE_8K;
@@ -181,16 +186,16 @@ public class RtcActivity extends Activity implements View.OnClickListener {
         if (TextUtils.isEmpty(srcPath) || TextUtils.isEmpty(AUDIO_FILE_PATH) || TextUtils.isEmpty(AUDIO_PROCESS_FILE_PATH)) {
             return;
         }
-        Log.e("sws", "srcPath==" + srcPath);
-        Log.e("sws", "AUDIO_PROCESS_FILE_PATH==" + AUDIO_PROCESS_FILE_PATH);
-        Log.e("sws", "AUDIO_FILE_PATH==" + AUDIO_FILE_PATH);
+        Log.e("aaa", "srcPath==" + srcPath);
+        Log.e("aaa", "AUDIO_PROCESS_FILE_PATH==" + AUDIO_PROCESS_FILE_PATH);
+        Log.e("aaa", "AUDIO_FILE_PATH==" + AUDIO_FILE_PATH);
 
         mProcessFile = new File(AUDIO_PROCESS_FILE_PATH);
 
         mFile = new File(AUDIO_FILE_PATH);
 
         if (!mFile.exists() || mFile.length() <= 0) {
-            Log.e("sws", " init file-----------");
+            Log.e("aaa", " init file-----------");
             mThreadExecutor.execute(new Runnable() {
                 @Override
                 public void run() {
@@ -206,14 +211,14 @@ public class RtcActivity extends Activity implements View.OnClickListener {
                         inputStream.close();
                         fileOutputStream.close();
                         isInitialized = true;
-                        Log.e("sws", " init file end-----------");
+                        Log.e("aaa", " init file end-----------");
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                 }
             });
         } else {
-            Log.e("sws", "-----------");
+            Log.e("aaa", "-----------");
             isInitialized = true;
         }
     }
@@ -236,18 +241,28 @@ public class RtcActivity extends Activity implements View.OnClickListener {
         }
     }
 
+
     private void process() {
         if (isProcessing) {
             return;
         }
         isProcessing = true;
+        //ns初始化
+        //fs == 8000 || fs == 16000 || fs == 32000 || fs == 48000
+        nsxId = WebRtcNsUtils.WebRtcNsx_Create();
+        int nsxInit = WebRtcNsUtils.WebRtcNsx_Init(nsxId, 8000); //0代表成功
+        int nexSetPolicy = WebRtcNsUtils.nsxSetPolicy(nsxId, 2);
+
+        //agc初始化
+        agcId = WebRtcAGCUtils.WebRtcAgc_Create();
+        //agcMode 0,1,2,3
+        int agcInit = WebRtcAGCUtils.WebRtcAgc_Init(agcId, 0, 255, 3, mSampleRate);
+        int agcSetConfig = WebRtcAGCUtils.agcSetConfig(agcId, (short)3, (short) 20, true);
+        Log.e("aaa", "nexId--" + nsxId + "-----nsxInit----" + nsxInit + "---nexSetPolicy---" + nexSetPolicy);
+        Log.e("aaa", "agcId---->" + agcId + "-----agcInit--->" + agcInit + "----agcSetConfig--" + agcSetConfig);
         mThreadExecutor.execute(new Runnable() {
             @Override
             public void run() {
-//                WebRtcUtils.webRtcAgcInit(0, 255, mSampleRate);
-//                WebRtcNsUtils.webRtcNsInit(mSampleRate);
-
-                Log.e("sws", "====mSampleRate=" + mSampleRate + ": process32KData=" + process32KData);
                 FileInputStream ins = null;
                 FileOutputStream out = null;
                 try {
@@ -257,42 +272,21 @@ public class RtcActivity extends Activity implements View.OnClickListener {
                     out = new FileOutputStream(outFile);
 
                     byte[] buf;
-                    if (process32KData) {
-                        //TODO
-                        /*
-                         * 测试发现，32k采样率,数据buf越少，增益后可能有滋滋的声音
-                         *
-                         */
-                        buf = new byte[640 * 40];
-                    } else {
-                        buf = new byte[320];
-                    }
+                    buf = new byte[320];
                     while (ins.read(buf) != -1) {
-                        short[] shortData = new short[buf.length >> 1];
+                        short[] inputData = new short[buf.length >> 1];
+                        short[] nsProcessData = new short[buf.length >> 1];
+                        short[] outAgcData = new short[buf.length >> 1];
 
-                        short[] processData = new short[buf.length >> 1];
-
-                        ByteBuffer.wrap(buf).order(ByteOrder.LITTLE_ENDIAN).asShortBuffer().get(shortData);
-
-                        if (process32KData) {
-                            //    short[] nsProcessData =shortData;
-//                            short[] nsProcessData = WebRtcUtils.webRtcNsProcess32k(shortData.length, shortData);
-//                            WebRtcUtils.webRtcAgcProcess32k(nsProcessData, processData, nsProcessData.length);
-//                            out.write(shortsToBytes(processData));
+                        ByteBuffer.wrap(buf).order(ByteOrder.LITTLE_ENDIAN).asShortBuffer().get(inputData);
+                        WebRtcNsUtils.WebRtcNsx_Process(nsxId, inputData, num_bands, nsProcessData);
+                        if (mIsOpenAgc) {
+                            int ret = WebRtcAGCUtils.agcProcess(agcId, nsProcessData, num_bands, 80, outAgcData, 0, 0, 0, false);
+                            Log.e("aaa", "agc--->ret" + ret);
+                            out.write(shortsToBytes(outAgcData));
                         } else {
-                            short[] nsProcessData = new short[160];
-                            if (selectId == R.id.rb_16k) {
-//                                nsProcessData = WebRtcNsUtils.webRtcNsProcess(mSampleRate, shortData.length, shortData);
-//                                WebRtcUtils.webRtcAgcProcess(nsProcessData, processData, shortData.length);
-//                                out.write(shortsToBytes(nsProcessData));
-                            } else if (selectId == R.id.rb_8k) {
-                                Log.e("aaa", "shortData.length---->" + shortData.length);
-//                                 WebRtcNsUtils.WebRtcNsx_Process(WebRtcNs, shortData,1, nsProcessData);
-//                                WebRtcUtils.webRtcAgcProcess(nsProcessData, processData, nsProcessData.length);
-                                out.write(shortsToBytes(nsProcessData));
-                            }
+                            out.write(shortsToBytes(nsProcessData));
                         }
-
                     }
                     runOnUiThread(new Runnable() {
                         @Override
@@ -304,7 +298,8 @@ public class RtcActivity extends Activity implements View.OnClickListener {
                     e.printStackTrace();
                 } finally {
                     isProcessing = false;
-//                    WebRtcNsUtils.webRtcNsFree();
+                    WebRtcNsUtils.WebRtcNsx_Free(nsxId);
+                    WebRtcAGCUtils.agcFree(agcId);
                     if (out != null) {
                         try {
                             out.close();
@@ -320,7 +315,6 @@ public class RtcActivity extends Activity implements View.OnClickListener {
                         }
                     }
                 }
-                Log.e("sws", "ns end======");
             }
         });
 

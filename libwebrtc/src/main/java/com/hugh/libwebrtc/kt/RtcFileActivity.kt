@@ -23,6 +23,7 @@ import kotlin.concurrent.thread
 class RtcFileActivity : AppCompatActivity() {
     private val tag = "MainActivity"
     var isStop = false
+    private val smpleRate = 16000;
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.module_rtc_activity_file)
@@ -42,7 +43,7 @@ class RtcFileActivity : AppCompatActivity() {
                             getSystemService(Context.AUDIO_SERVICE) as AudioManager
                     val bufferSize: Int =
                             AudioTrack.getMinBufferSize(
-                                    16000,
+                                    smpleRate,
                                     AudioFormat.CHANNEL_OUT_MONO,
                                     AudioFormat.ENCODING_PCM_16BIT
                             )
@@ -51,7 +52,7 @@ class RtcFileActivity : AppCompatActivity() {
                             .build()
                     val audioFormat: AudioFormat = AudioFormat.Builder()
                             .setEncoding(AudioFormat.ENCODING_PCM_16BIT)
-                            .setSampleRate(16000)
+                            .setSampleRate(smpleRate)
                             .setChannelMask(AudioFormat.CHANNEL_OUT_MONO)
                             .build()
                     val sessionId = audioManager.generateAudioSessionId()
@@ -73,7 +74,7 @@ class RtcFileActivity : AppCompatActivity() {
 
                         agcUtils = WebRtcAGCUtils()
                         agcId = WebRtcAgc_Create()
-                        val agcInitResult = WebRtcAgc_Init(agcId, 0, 255, 3, 16000)
+                        val agcInitResult = WebRtcAgc_Init(agcId, 0, 255, 3, smpleRate)
                         val agcSetConfigResult = agcSetConfig(agcId, 9, 9, true)
                         Log.e(
                                 tag,
@@ -97,10 +98,11 @@ class RtcFileActivity : AppCompatActivity() {
                                         .asShortBuffer()
                                         .get(inputData)
                                 WebRtcNsx_Process(nsxId, inputData, 1, outNsData)
-                                agcProcess(
+                                var ret = agcProcess(
                                         agcId, outNsData, 1, 160, outAgcData,
                                         0, 0, 0, false
                                 )
+                                Log.e("aaa", "ret---->$ret");
                                 if (isStop) {
                                     return@run
                                 }

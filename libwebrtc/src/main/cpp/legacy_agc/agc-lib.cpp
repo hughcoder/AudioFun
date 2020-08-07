@@ -9,13 +9,13 @@ extern "C" {
 #endif
 
 JNIEXPORT jlong JNICALL
-Java_com_hugh_libwebrtc_WebRtcAGCUtils_WebRtcAgc_1Create(JNIEnv *env, jobject obj) {
+Java_com_hugh_libwebrtc_WebRtcAGCUtils_WebRtcAgc_1Create(JNIEnv *env, jclass obj) {
     return (long) WebRtcAgc_Create();
 }
 
 
 JNIEXPORT jint JNICALL
-Java_com_hugh_libwebrtc_WebRtcAGCUtils_agcFree(JNIEnv *env, jobject obj,
+Java_com_hugh_libwebrtc_WebRtcAGCUtils_agcFree(JNIEnv *env, jclass obj,
                                                              jlong agcInst) {
     void *_agcInst = (void *) agcInst;
     if (_agcInst == nullptr)
@@ -26,7 +26,7 @@ Java_com_hugh_libwebrtc_WebRtcAGCUtils_agcFree(JNIEnv *env, jobject obj,
 
 JNIEXPORT jint JNICALL
 Java_com_hugh_libwebrtc_WebRtcAGCUtils_WebRtcAgc_1Init(JNIEnv *env,
-                                                       jobject obj, jlong agcInst,
+                                                       jclass obj, jlong agcInst,
                                                        jint minLevel, jint maxLevel,
                                                        jint agcMode, jint fs) {
     void *_agcInst = (void *) agcInst;
@@ -36,7 +36,7 @@ Java_com_hugh_libwebrtc_WebRtcAGCUtils_WebRtcAgc_1Init(JNIEnv *env,
 }
 
 JNIEXPORT jint JNICALL
-Java_com_hugh_libwebrtc_WebRtcAGCUtils_agcSetConfig(JNIEnv *env, jobject obj,
+Java_com_hugh_libwebrtc_WebRtcAGCUtils_agcSetConfig(JNIEnv *env, jclass obj,
                                                                   jlong agcInst,
                                                                   jshort targetLevelDbfs,
                                                                   jshort compressionGaindB,
@@ -53,7 +53,7 @@ Java_com_hugh_libwebrtc_WebRtcAGCUtils_agcSetConfig(JNIEnv *env, jobject obj,
 }
 
 JNIEXPORT jint JNICALL
-Java_com_hugh_libwebrtc_WebRtcAGCUtils_agcProcess(JNIEnv *env, jobject obj,
+Java_com_hugh_libwebrtc_WebRtcAGCUtils_agcProcess(JNIEnv *env, jclass obj,
                                                                 jlong agcInst,
                                                                 jshortArray inNear,
                                                                 jint num_bands,
@@ -80,7 +80,7 @@ Java_com_hugh_libwebrtc_WebRtcAGCUtils_agcProcess(JNIEnv *env, jobject obj,
 
 
 JNIEXPORT jint JNICALL
-Java_com_hugh_libwebrtc_WebRtcAGCUtils_agcAddFarend(JNIEnv *env, jobject obj,
+Java_com_hugh_libwebrtc_WebRtcAGCUtils_agcAddFarend(JNIEnv *env, jclass obj,
                                                                   jlong agcInst,
                                                                   jshortArray inFar,
                                                                   jint samples) {
@@ -95,7 +95,7 @@ Java_com_hugh_libwebrtc_WebRtcAGCUtils_agcAddFarend(JNIEnv *env, jobject obj,
 
 
 JNIEXPORT jint JNICALL
-Java_com_hugh_libwebrtc_WebRtcAGCUtils_agcAddMic(JNIEnv *env, jobject obj,
+Java_com_hugh_libwebrtc_WebRtcAGCUtils_agcAddMic(JNIEnv *env, jclass obj,
                                                                jlong agcInst,
                                                                jshortArray inMic,
                                                                jint num_bands, jint samples
@@ -111,7 +111,7 @@ Java_com_hugh_libwebrtc_WebRtcAGCUtils_agcAddMic(JNIEnv *env, jobject obj,
 
 
 JNIEXPORT jint JNICALL
-Java_com_hugh_libwebrtc_WebRtcAGCUtils_agcVirtualMic(JNIEnv *env, jobject obj,
+Java_com_hugh_libwebrtc_WebRtcAGCUtils_agcVirtualMic(JNIEnv *env, jclass obj,
                                                                    jlong agcInst,
                                                                    jshortArray inMic,
                                                                    jint num_bands,
