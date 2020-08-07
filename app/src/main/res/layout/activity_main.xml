@@ -1,14 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center"
     android:orientation="vertical">
 
-    <ListView
-        android:id="@+id/lv_main"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="音频操作"
+        android:textSize="22sp"
+        android:textStyle="bold" />
 
-    </ListView>
+
+    <Button
+        android:id="@+id/btn_go_fmod"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="fmod操作页面"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/btn_go_soundtouch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="soundTouch操作页面"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/btn_go_webrtc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="webRtc操作页面"
+        android:textSize="20sp" />
 </LinearLayout>

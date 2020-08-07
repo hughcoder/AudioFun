@@ -1,4 +1,4 @@
-package com.hugh.libwebrtc.kt
+package com.hugh.libwebrtc.other
 
 import android.content.Context
 import android.media.AudioAttributes
