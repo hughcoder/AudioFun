@@ -9,6 +9,10 @@
 [音视频开发之旅(五)](https://blog.csdn.net/qq_38366777/article/details/107405903)
 
 
+### webrtc降噪增益模块介绍
+
+[音视频开发之旅(六)](https://blog.csdn.net/qq_38366777/article/details/107877262)
+
 ## SoundTouch
 
 ### 相关参数概念
