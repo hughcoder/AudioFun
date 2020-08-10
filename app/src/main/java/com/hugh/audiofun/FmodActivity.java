@@ -33,6 +33,7 @@ import static com.hugh.audiofun.FmodSound.playSound;
 public class FmodActivity extends Activity {
     private CommonAdapter<Item> mAdapter;
     String path = "file:///android_asset/lightlesson_excellent.mp3";
+    String path2 = "file:///android_asset/alipay.mp3";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +52,12 @@ public class FmodActivity extends Activity {
                 return new ItemVH();
             }
         };
+        findViewById(R.id.iv_back).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         listView.setAdapter(mAdapter);
         listView.setOnItemClickListener((parent, view, position, id) -> {
             Item item = mAdapter.getItem(position);
@@ -80,39 +87,22 @@ public class FmodActivity extends Activity {
                     case TYPE_PLAY_8:
                         playSound(path, TYPE_TREMOLO);
                         break;
-                    case TYPE_GO:
-                        Intent intent = new Intent(FmodActivity.this, SoundTouchActivity.class);
-                        startActivity(intent);
-                        break;
-                    case TYPE_GO_WEBRTC:
-                        startActivity(new Intent(FmodActivity.this, RtcActivity.class));
-                        break;
-                    case TYPE_GO_FUN_AUDIO:
-                        startActivity(new Intent(FmodActivity.this, AudioFunHomeActivity.class));
-                        break;
-                    case TYPE_GO_WEBRTC2:
-                        startActivity(new Intent(FmodActivity.this, RtcFileActivity.class));
-                        break;
+
                     default:
                         break;
                 }
             }
         });
 
-//        goToSoundTouch();
     }
 
-    private void goToSoundTouch() {
-        Intent intent = new Intent(FmodActivity.this, SoundTouchActivity.class);
-        startActivity(intent);
-    }
+
 
     private void play3D(String path) {
         FmodSound.play3DSound(path);
     }
 
     enum Item {
-        TYPE_GO("进入soundTouch"),
         TYPE_PLAY_1("播放普通"),
         TYPE_PLAY_2("播放萝莉"),
         TYPE_PLAY_3("播放大叔"),
@@ -120,10 +110,7 @@ public class FmodActivity extends Activity {
         TYPE_PLAY_5("播放搞怪"),
         TYPE_PLAY_6("播放空灵"),
         TYPE_PLAY_7("播放合唱团"),
-        TYPE_PLAY_8("播放颤音"),
-        TYPE_GO_WEBRTC("进入webRtc"),
-        TYPE_GO_WEBRTC2("进入webRtc2"),
-        TYPE_GO_FUN_AUDIO("进入录音调节页面");
+        TYPE_PLAY_8("播放颤音");
 
 
         private String title;
