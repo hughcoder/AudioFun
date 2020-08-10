@@ -4,14 +4,25 @@
 
 对自己的录音进行调节
 
+
+
 ### 变声对比以及基础概念
 
 [音视频开发之旅(五)](https://blog.csdn.net/qq_38366777/article/details/107405903)
 
 
+
 ### webrtc降噪增益模块介绍
 
 [音视频开发之旅(六)](https://blog.csdn.net/qq_38366777/article/details/107877262)
+
+### 操作页面展示
+
+ <img src="./img/img1.png" width = "200" height = "400"  align=center />
+
+ <img src="./img/img2.png" width = "200" height = "400"  align=center />
+
+ <img src="./img/img3.png" width = "200" height = "400"  align=center />
 
 ## SoundTouch
 
