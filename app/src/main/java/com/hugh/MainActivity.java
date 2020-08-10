@@ -7,6 +7,7 @@ import android.view.View;
 
 import com.hugh.audiofun.FmodActivity;
 import com.hugh.audiofun.R;
+import com.hugh.libwebrtc.other.RtcFileActivity;
 import com.hugh.webrtcdemo.RtcActivity;
 import com.hugh.sound.SoundTouchExActivity;
 
@@ -42,6 +43,13 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, RtcActivity.class));
+            }
+        });
+
+        findViewById(R.id.btn_go_test).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
             }
         });
     }

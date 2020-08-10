@@ -25,7 +25,7 @@ public class AudioTrackManager {
     /*音频的采样率，44.1kHz可以所有手机*/
     private static int SAMPLE_RATE_IN_HZ = 44100;
     /*音频的声道数，此处为单声道*/
-    private static int CHANNEL_CONFIGURATION = AudioFormat.CHANNEL_IN_STEREO;
+    private static int CHANNEL_CONFIGURATION = AudioFormat.CHANNEL_OUT_MONO;
     /*采样格式，数据位宽是16位*/
     private static int AUDIO_FORMAT = AudioFormat.ENCODING_PCM_16BIT;
     /*音频缓存区大小*/
@@ -55,10 +55,11 @@ public class AudioTrackManager {
     /**
      * 初始化配置
      */
-    public void initConfig() {
+    public void initConfig(int sample) {
 
         if (null != mAudioTrack) mAudioTrack.release();
-
+        SAMPLE_RATE_IN_HZ =sample;
+        Log.e("aaa","初始码率---->"+sample);
         mBufferSizeInBytes = AudioTrack.getMinBufferSize(SAMPLE_RATE_IN_HZ,CHANNEL_CONFIGURATION,AUDIO_FORMAT);
         mAudioTrack = new AudioTrack(STREAM_TYPE,SAMPLE_RATE_IN_HZ,CHANNEL_CONFIGURATION,AUDIO_FORMAT,mBufferSizeInBytes,AudioTrack.MODE_STREAM);
 
@@ -84,7 +85,7 @@ public class AudioTrackManager {
     /**
      * 停止播放
      */
-    private void stop(){
+    public void stop(){
         try {
             if (mAudioTrack != null){
 

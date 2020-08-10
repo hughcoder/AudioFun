@@ -36,4 +36,13 @@
         android:layout_marginTop="20dp"
         android:text="webRtc操作页面"
         android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/btn_go_test"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:visibility="gone"
+        android:text="测试页面"
+        android:textSize="20sp" />
 </LinearLayout>

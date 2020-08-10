@@ -100,6 +100,12 @@
                 android:text="选择本地手机文件" />
 
             <Button
+                android:id="@+id/btn_play_origin_file"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="播放原文件" />
+
+            <Button
                 android:id="@+id/btn_choose_sample"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -165,19 +171,19 @@
                     android:id="@+id/tv_current_processfile"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    app:layout_constraintStart_toEndOf="@+id/tv_process_content"
-                    app:layout_constraintTop_toTopOf="parent"
+                    android:padding="1dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_process_content"
                     tools:text="ddddd" />
 
                 <Button
                     android:id="@+id/btn_audio_play"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_process_content"
-                    app:layout_constraintStart_toStartOf="parent"
-                    android:layout_marginTop="20dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="AudioTrack 播放当前生成文件"/>
+                    android:layout_marginTop="20dp"
+                    android:text="AudioTrack 播放当前生成文件"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_current_processfile" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 
 import com.hugh.audiofun.R;
+import com.hugh.component.audio.AudioTrackManager;
 import com.hugh.libwebrtc.WebRtcAGCUtils;
 import com.hugh.libwebrtc.WebRtcNsUtils;
 import com.hugh.sound.util.ContentUtil;
@@ -87,6 +88,7 @@ public class RtcActivity extends Activity implements View.OnClickListener {
     private AudioTrack mAudioTrack;
     private File mFile;
     private File mProcessFile;
+    private String mProcessFilePath;
     private String AUDIO_FILE_PATH;
     private String AUDIO_PROCESS_FILE_PATH;
     private String srcPath;
@@ -101,11 +103,13 @@ public class RtcActivity extends Activity implements View.OnClickListener {
     private TextView mTvTitle;
     private Button mBtnChooseFile;
     private Button mBtnChooseSample;
+    private TextView mTvCurrentProcessFile;
     private boolean mIsOpenAgc;
     private long nsxId; //ns降噪id
     private long agcId; //agc增益id
     private int num_bands = 1;
     private Button mPlayBtn;
+    private Button mPlayOriginBtn;
 
 
     @Override
@@ -119,6 +123,13 @@ public class RtcActivity extends Activity implements View.OnClickListener {
         mTvTitle = findViewById(R.id.tv_title);
         mBtnChooseSample = findViewById(R.id.btn_choose_sample);
         mPlayBtn = findViewById(R.id.btn_audio_play);
+        mTvCurrentProcessFile = findViewById(R.id.tv_current_processfile);
+        mPlayOriginBtn = findViewById(R.id.btn_play_origin_file);
+        mBtnNsOperate = findViewById(R.id.ns_audio);
+        mBtnNsOperate.setOnClickListener(this);
+        mPlayBtn.setOnClickListener(this);
+        mBtnChooseFile.setOnClickListener(this);
+        mPlayOriginBtn.setOnClickListener(this);
         mTvTitle.setText("webrtc测试");
         agc_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -130,14 +141,6 @@ public class RtcActivity extends Activity implements View.OnClickListener {
                     Toast.makeText(RtcActivity.this, "开启agc增益", Toast.LENGTH_LONG).show();
                 }
                 Log.e("aaa", "mIsOpenAgc------>" + mIsOpenAgc);
-            }
-        });
-
-
-        mBtnChooseFile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                selectFile();
             }
         });
 
@@ -154,16 +157,6 @@ public class RtcActivity extends Activity implements View.OnClickListener {
                 dialog.show();
             }
         });
-
-        mPlayBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.e("aaa","播放");
-            }
-        });
-
-        mBtnNsOperate = findViewById(R.id.ns_audio);
-        mBtnNsOperate.setOnClickListener(this);
         selectId = R.id.rb_8k;
         RadioGroup radioGroup = findViewById(R.id.rg);
         int checkedRadioButtonId = radioGroup.getCheckedRadioButtonId();
@@ -183,6 +176,7 @@ public class RtcActivity extends Activity implements View.OnClickListener {
             initAudioFile();
         }
     }
+
 
     protected void selectFile() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
@@ -257,6 +251,17 @@ public class RtcActivity extends Activity implements View.OnClickListener {
             }
 
             process();
+        } else if (v == mPlayBtn) {
+            Log.e("aaa","当前播放新文件采样率----->"+mSampleRate);
+            AudioTrackManager.getInstance().initConfig(mSampleRate);
+            AudioTrackManager.getInstance().play(mProcessFilePath);
+        }else if(v == mBtnChooseFile){
+            selectFile();
+        }else if(v == mPlayOriginBtn){
+            Log.e("aaa","当前播放原文件采样率----->"+mSampleRate);
+            Log.e("aaa","当前播放原文件 ----->"+AUDIO_FILE_PATH);
+            AudioTrackManager.getInstance().initConfig(mSampleRate);
+            AudioTrackManager.getInstance().play(AUDIO_FILE_PATH);
         }
     }
 
@@ -269,7 +274,7 @@ public class RtcActivity extends Activity implements View.OnClickListener {
         Log.e("aaa", "AUDIO_FILE_PATH==" + AUDIO_FILE_PATH);
 
         mProcessFile = new File(AUDIO_PROCESS_FILE_PATH);
-
+        mProcessFilePath = AUDIO_PROCESS_FILE_PATH;
         mFile = new File(AUDIO_FILE_PATH);
 
         if (!mFile.exists() || mFile.length() <= 0) {
@@ -328,7 +333,7 @@ public class RtcActivity extends Activity implements View.OnClickListener {
         //ns初始化
         //fs == 8000 || fs == 16000 || fs == 32000 || fs == 48000
         nsxId = WebRtcNsUtils.WebRtcNsx_Create();
-        int nsxInit = WebRtcNsUtils.WebRtcNsx_Init(nsxId, 8000); //0代表成功
+        int nsxInit = WebRtcNsUtils.WebRtcNsx_Init(nsxId, mSampleRate); //0代表成功
         int nexSetPolicy = WebRtcNsUtils.nsxSetPolicy(nsxId, 2);
 
         //agc初始化
@@ -338,6 +343,18 @@ public class RtcActivity extends Activity implements View.OnClickListener {
         int agcSetConfig = WebRtcAGCUtils.agcSetConfig(agcId, (short) 3, (short) 20, true);
         Log.e("aaa", "nexId--" + nsxId + "-----nsxInit----" + nsxInit + "---nexSetPolicy---" + nexSetPolicy);
         Log.e("aaa", "agcId---->" + agcId + "-----agcInit--->" + agcInit + "----agcSetConfig--" + agcSetConfig);
+        int sample = 80;
+        if(mSampleRate == 8000){
+            sample =80;
+        }else if(mSampleRate == 16000){
+            sample = 160;
+        }else if(mSampleRate == 32000){
+            sample = 320;
+        }else if(mSampleRate == 48000){
+            sample = 480;
+        }
+        final int finalSample = sample;
+        mProcessFilePath = AUDIO_PROCESS_FILE_PATH;
         mThreadExecutor.execute(new Runnable() {
             @Override
             public void run() {
@@ -349,6 +366,8 @@ public class RtcActivity extends Activity implements View.OnClickListener {
                     File outFile = new File(AUDIO_PROCESS_FILE_PATH);
                     out = new FileOutputStream(outFile);
 
+                    Log.e("aaa","操作文件:"+inFile+"----mSampleRate:"+mSampleRate+"----->fq:"+finalSample);
+
                     byte[] buf;
                     buf = new byte[320];
                     while (ins.read(buf) != -1) {
@@ -359,8 +378,10 @@ public class RtcActivity extends Activity implements View.OnClickListener {
                         ByteBuffer.wrap(buf).order(ByteOrder.LITTLE_ENDIAN).asShortBuffer().get(inputData);
                         WebRtcNsUtils.WebRtcNsx_Process(nsxId, inputData, num_bands, nsProcessData);
                         if (mIsOpenAgc) {
-                            int ret = WebRtcAGCUtils.agcProcess(agcId, nsProcessData, num_bands, 80, outAgcData, 0, 0, 0, false);
-//                            Log.e("aaa", "agc--->ret" + ret);
+                            int ret = WebRtcAGCUtils.agcProcess(agcId, nsProcessData, num_bands, finalSample, outAgcData, 0, 0, 0, false);
+                            if(ret !=0){
+                                Log.e("aaa","agcProcess 出问题");
+                            }
                             out.write(shortsToBytes(outAgcData));
                         } else {
                             out.write(shortsToBytes(nsProcessData));
@@ -369,6 +390,7 @@ public class RtcActivity extends Activity implements View.OnClickListener {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            mTvCurrentProcessFile.setText(mProcessFilePath);
                             Toast.makeText(getApplicationContext(), "处理完成", Toast.LENGTH_LONG).show();
                         }
                     });
@@ -398,6 +420,11 @@ public class RtcActivity extends Activity implements View.OnClickListener {
 
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        AudioTrackManager.getInstance().stop();
+    }
 
     private byte[] shortsToBytes(short[] data) {
         byte[] buffer = new byte[data.length * 2];

@@ -23,15 +23,18 @@ import kotlin.concurrent.thread
 class RtcFileActivity : AppCompatActivity() {
     private val tag = "MainActivity"
     var isStop = false
-    private val smpleRate = 16000;
+    private var smpleRate = 32000; //8000  ,  16000
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.module_rtc_activity_file)
     }
 
     private val audioRes by lazy {
-        resources.openRawResource(R.raw.recorded_audio_16k)
+//        resources.openRawResource(R.raw.recorded_audio_16k)
+        resources.openRawResource(R.raw.recorded_audio_32k)
+//        resources.openRawResource(R.raw.recorded_audio_8k)
     }
+
 
     fun onClick(view: View) {
         when (view) {
@@ -68,14 +71,15 @@ class RtcFileActivity : AppCompatActivity() {
                     if (enabledNsAgc) {
                         nsUtils = WebRtcNsUtils()
                         nsxId = WebRtcNsx_Create()
-                        val nsxInit = WebRtcNsx_Init(nsxId, 16000)
+                        val frequency = smpleRate;
+                        val nsxInit = WebRtcNsx_Init(nsxId, frequency)
                         val nexSetPolicy = nsxSetPolicy(nsxId, 2)
                         Log.i(tag, "nsxId : $nsxId  nsxInit: $nsxInit nexSetPolicy: $nexSetPolicy")
 
                         agcUtils = WebRtcAGCUtils()
                         agcId = WebRtcAgc_Create()
                         val agcInitResult = WebRtcAgc_Init(agcId, 0, 255, 3, smpleRate)
-                        val agcSetConfigResult = agcSetConfig(agcId, 9, 9, true)
+                        val agcSetConfigResult = agcSetConfig(agcId, 3, 15, true)
                         Log.e(
                                 tag,
                                 "agcId : $agcId  agcInit: $agcInitResult agcSetConfig: $agcSetConfigResult"
@@ -102,10 +106,13 @@ class RtcFileActivity : AppCompatActivity() {
                                         agcId, outNsData, 1, 160, outAgcData,
                                         0, 0, 0, false
                                 )
-                                Log.e("aaa", "ret---->$ret");
+                                if(ret!=0){
+                                    Log.e("aaa","处理失败")
+                                }
                                 if (isStop) {
                                     return@run
                                 }
+                                Log.e("aaa","数据处理------>"+outAgcData.size)
                                 audioTrack.write(outAgcData, 0, 160)
                             } else {
                                 audioTrack.write(byteArray, 0, byteArray.size)
@@ -124,7 +131,12 @@ class RtcFileActivity : AppCompatActivity() {
             stop_btn -> {
                 isStop = true
             }
+            change_32k ->{
+                smpleRate = 32000
+
+            }
             else -> {
+
             }
         }
     }
