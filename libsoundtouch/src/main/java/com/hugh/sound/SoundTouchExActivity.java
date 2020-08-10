@@ -37,7 +37,7 @@ import androidx.annotation.Nullable;
 //pitch 半音：  pitch = -3：音调降低了-3个半音  音调上升了+3个半音。pitch = + 3
 //rate 播放率：  增加了35％ 这将相当于打了33 1 / 3在45 RPM RPM黑胶唱片音频光盘
 
-public class ExampleActivity extends Activity implements OnClickListener {
+public class SoundTouchExActivity extends Activity implements OnClickListener {
     TextView textViewConsole = null;
     EditText editSourceFile = null;
     EditText editOutputFile = null;

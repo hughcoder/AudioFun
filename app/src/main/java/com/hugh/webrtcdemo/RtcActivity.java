@@ -1,7 +1,8 @@
-package com.hugh.libwebrtc;
+package com.hugh.webrtcdemo;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 import android.media.AudioFormat;
@@ -18,7 +19,14 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.RadioGroup;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
+
+
+import com.hugh.audiofun.R;
+import com.hugh.libwebrtc.WebRtcAGCUtils;
+import com.hugh.libwebrtc.WebRtcNsUtils;
+import com.hugh.sound.util.ContentUtil;
 
 
 import java.io.File;
@@ -36,8 +44,11 @@ import androidx.core.app.ActivityCompat;
 
 /**
  * Created by chenyw on 2020/7/24.
+ * 目前此页面只处理pcm文件
  */
 public class RtcActivity extends Activity implements View.OnClickListener {
+
+    private static final String TAG = RtcActivity.class.getSimpleName();
 
     private static final int SAMPLERATE_32K = 32000;
     private static final int SAMPLERATE_16K = 16000;
@@ -85,10 +96,16 @@ public class RtcActivity extends Activity implements View.OnClickListener {
     private int selectId = -1;
     private boolean isPlaying;
     private Switch agc_switch;
+    private TextView mTvHandleFile;
+    private TextView mTvHandleSampleRate;
+    private TextView mTvTitle;
+    private Button mBtnChooseFile;
+    private Button mBtnChooseSample;
     private boolean mIsOpenAgc;
     private long nsxId; //ns降噪id
     private long agcId; //agc增益id
     private int num_bands = 1;
+    private Button mPlayBtn;
 
 
     @Override
@@ -96,6 +113,13 @@ public class RtcActivity extends Activity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.module_rtc_activity_main);
         agc_switch = findViewById(R.id.agc_switch);
+        mTvHandleFile = findViewById(R.id.tv_current_handle_file);
+        mTvHandleSampleRate = findViewById(R.id.tv_current_handle_sample);
+        mBtnChooseFile = findViewById(R.id.btn_choose_file);
+        mTvTitle = findViewById(R.id.tv_title);
+        mBtnChooseSample = findViewById(R.id.btn_choose_sample);
+        mPlayBtn = findViewById(R.id.btn_audio_play);
+        mTvTitle.setText("webrtc测试");
         agc_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -108,6 +132,36 @@ public class RtcActivity extends Activity implements View.OnClickListener {
                 Log.e("aaa", "mIsOpenAgc------>" + mIsOpenAgc);
             }
         });
+
+
+        mBtnChooseFile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectFile();
+            }
+        });
+
+        mBtnChooseSample.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RtcChooseSampleDialog dialog = new RtcChooseSampleDialog(RtcActivity.this, new RtcChooseSampleDialog.SampleDialogListener() {
+                    @Override
+                    public void selectSample(int Sample) {
+                        mSampleRate = Sample;
+                        mTvHandleSampleRate.setText(String.valueOf(mSampleRate));
+                    }
+                });
+                dialog.show();
+            }
+        });
+
+        mPlayBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.e("aaa","播放");
+            }
+        });
+
         mBtnNsOperate = findViewById(R.id.ns_audio);
         mBtnNsOperate.setOnClickListener(this);
         selectId = R.id.rb_8k;
@@ -117,7 +171,6 @@ public class RtcActivity extends Activity implements View.OnClickListener {
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-
                 switchDataSrc(checkedId);
             }
         });
@@ -131,12 +184,36 @@ public class RtcActivity extends Activity implements View.OnClickListener {
         }
     }
 
+    protected void selectFile() {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("*/*");
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        this.startActivityForResult(intent, 123);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (data != null && data.getData() != null) {
+            String filePath = ContentUtil.getPath(this, data.getData());
+            Log.i(TAG, "filePath=" + filePath);
+            onSelectedFile(filePath);
+        }
+    }
+
+    void onSelectedFile(String filePath) {
+        mTvHandleFile.setText(filePath);
+    }
 
     private void initAudioFile() {
+        //初始化默认值
         mSampleRate = SAMPLERATE_8K;
         AUDIO_FILE_PATH = AUDIO_FILE_PATH_8k;
         AUDIO_PROCESS_FILE_PATH = AUDIO_PROCESS_FILE_PATH_8k;
         srcPath = AUDIO_FILE_AST_8K;
+        mTvHandleFile.setText(AUDIO_FILE_PATH);
+        mTvHandleSampleRate.setText(String.valueOf(mSampleRate));
         initAudio();
         initAudioRecord();
     }
@@ -165,7 +242,8 @@ public class RtcActivity extends Activity implements View.OnClickListener {
             AUDIO_PROCESS_FILE_PATH = AUDIO_PROCESS_FILE_PATH_32k;
             srcPath = AUDIO_FILE_AST_32k;
         }
-
+        mTvHandleFile.setText(AUDIO_FILE_PATH);
+        mTvHandleSampleRate.setText(String.valueOf(mSampleRate));
         initAudio();
         initAudioRecord();
     }
@@ -257,7 +335,7 @@ public class RtcActivity extends Activity implements View.OnClickListener {
         agcId = WebRtcAGCUtils.WebRtcAgc_Create();
         //agcMode 0,1,2,3
         int agcInit = WebRtcAGCUtils.WebRtcAgc_Init(agcId, 0, 255, 3, mSampleRate);
-        int agcSetConfig = WebRtcAGCUtils.agcSetConfig(agcId, (short)3, (short) 20, true);
+        int agcSetConfig = WebRtcAGCUtils.agcSetConfig(agcId, (short) 3, (short) 20, true);
         Log.e("aaa", "nexId--" + nsxId + "-----nsxInit----" + nsxInit + "---nexSetPolicy---" + nexSetPolicy);
         Log.e("aaa", "agcId---->" + agcId + "-----agcInit--->" + agcInit + "----agcSetConfig--" + agcSetConfig);
         mThreadExecutor.execute(new Runnable() {

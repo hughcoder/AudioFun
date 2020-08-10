@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="44dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/white">
+
+    <TextView
+        android:id="@+id/tv_title_left"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:textColor="@color/c1"
+        android:textSize="20sp"
+        android:visibility="gone"
+        android:background="?attr/actionBarItemBackground"
+        android:gravity="center"
+        tools:text="左边文字"
+        tools:visibility="visible"
+        />
+
+    <ImageView
+        android:id="@+id/img_title_left"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:src="@drawable/ic_back_grey"
+        android:background="?attr/actionBarItemBackground"
+        tools:ignore="ContentDescription"/>
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="70dp"
+        android:layout_marginRight="70dp"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:maxLines="1"
+        android:textColor="@color/c1"
+        android:textSize="24sp"
+        tools:text="标题"
+        />
+
+    <TextView
+        android:id="@+id/tv_title_right"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:gravity="center"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:textColor="@color/c1"
+        android:textSize="20sp"
+        android:visibility="gone"
+        tools:visibility="visible"
+        tools:text="右边文字"
+        android:background="?attr/actionBarItemBackground"
+        />
+
+    <ImageView
+        android:id="@+id/img_title_right"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:visibility="gone"
+        tools:visibility="visible"
+        android:background="?attr/actionBarItemBackground"
+        tools:ignore="ContentDescription"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#dcdcdc"
+        android:layout_alignParentBottom="true"/>
+
+</RelativeLayout>

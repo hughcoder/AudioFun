@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/layout_toolbar"
+        layout="@layout/layout_common_toolbar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="当前处理文件:"
+                    android:textColor="#ff72767a"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_current_handle_file"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:textStyle="bold"
+                    tools:text="1111" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="当前处理采样率:"
+                    android:textColor="#ff72767a"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_current_handle_sample"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:textStyle="bold"
+                    tools:text="1111" />
+
+            </LinearLayout>
+
+            <RadioGroup
+                android:id="@+id/rg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp">
+
+                <RadioButton
+                    android:id="@+id/rb_8k"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="测试默认文件 Hz_8000" />
+
+                <RadioButton
+                    android:id="@+id/rb_16k"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="测试默认文件 Hz_16000" />
+
+                <RadioButton
+                    android:id="@+id/rb_32k"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="测试默认文件 Hz_32000" />
+            </RadioGroup>
+
+            <Button
+                android:id="@+id/btn_choose_file"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="选择本地手机文件" />
+
+            <Button
+                android:id="@+id/btn_choose_sample"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="选择采样率" />
+
+            <Button
+                android:id="@+id/changeSample"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="更换采样率"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/ns_audio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="音频降噪处理" />
+
+
+            <LinearLayout
+                android:id="@+id/layout_agc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="是否开启agc增益"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <Switch
+                    android:id="@+id/agc_switch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="30dp"
+                android:background="@color/colorPrimaryDark" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tv_process_content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="当前生成的文件:"
+                    android:textColor="#ff72767a"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_current_processfile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    app:layout_constraintStart_toEndOf="@+id/tv_process_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="ddddd" />
+
+                <Button
+                    android:id="@+id/btn_audio_play"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_process_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginTop="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="AudioTrack 播放当前生成文件"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+
+</LinearLayout>

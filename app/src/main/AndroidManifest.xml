@@ -27,6 +27,7 @@
 
         <activity android:name=".FmodActivity"/>
         <activity android:name="com.hugh.audiohome.AudioFunHomeActivity" />
+        <activity android:name="com.hugh.webrtcdemo.RtcActivity"/>
     </application>
 
 </manifest>

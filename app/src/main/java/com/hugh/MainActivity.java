@@ -7,8 +7,8 @@ import android.view.View;
 
 import com.hugh.audiofun.FmodActivity;
 import com.hugh.audiofun.R;
-import com.hugh.libwebrtc.RtcActivity;
-import com.hugh.sound.SoundTouchActivity;
+import com.hugh.webrtcdemo.RtcActivity;
+import com.hugh.sound.SoundTouchExActivity;
 
 import androidx.annotation.Nullable;
 
@@ -34,7 +34,7 @@ public class MainActivity extends Activity {
         findViewById(R.id.btn_go_soundtouch).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, SoundTouchActivity.class));
+                startActivity(new Intent(MainActivity.this, SoundTouchExActivity.class));
             }
         });
 

@@ -2,6 +2,6 @@
     package="com.hugh.sound">
     <application>
         <activity android:name=".SoundTouchActivity" ></activity>
-        <activity android:name=".ExampleActivity"/>
+        <activity android:name=".SoundTouchExActivity"/>
     </application>
 </manifest>
